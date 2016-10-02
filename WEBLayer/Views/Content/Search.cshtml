@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    IEnumerable<WEBLayer.Models.GenreModel> Genres = ViewBag.Genres;
+
+    var genresList = Genres.Select(x => new SelectListItem
+    {
+        Text = x.Name,
+        Value = x.GenreID.ToString()
+
+    });
+}
+
+<link href="@Url.Content("~/Content/jquery-ui-1.12.1.min.css")" rel="stylesheet" type="text/css" />
+
+<h2>Search</h2>
+
+<div>
+    @using (Ajax.BeginForm("SearchResult", new AjaxOptions { UpdateTargetId = "results" }))
+    {
+        <input type="text" name="searchText" style="width: 200px; height: 30px; border-radius:5px" data-autocomplete-source="@Url.Action("AutocompleteSearch", "Content")"/>
+
+        <script type="text/javascript">
+            $(function () {
+                $("[data-autocomplete-source]").each(function () {
+                    var target = $(this);
+                    target.autocomplete({ source: target.attr("data-autocomplete-source") });
+                });
+           });
+        </script>
+
+        <select class="selectpicker" id="GenreID" name="GenreID" style="width: 200px; height: 30px; border-radius:5px">
+                <option value="">--Select genre--</option>
+                @foreach(var genre in genresList)
+                {
+                    <option value="@genre.Value">@genre.Text</option>
+                }
+        </select>
+
+        <input style="width: 100px; height: 30px; border-radius:5px" class="btn btn-warning" type="submit" value="Search" />
+    }
+    <div id="results"></div>
+</div>

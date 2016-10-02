@@ -1,0 +1,46 @@
+﻿@model IEnumerable<WEBLayer.Models.ShortContentModel>
+
+@{
+    ViewBag.Title = "Manage uploaded contents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Manage uploads</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Upload", "Content", null, new { @class = "btn btn-success", style="width:100px; height:30px"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            Edit
+        </th>
+        <th>
+            Delete
+        </th>
+    </tr>
+
+@foreach (var content in Model) {
+    <tr>       
+        <td>
+            @Html.DisplayFor(modelItem => content.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => content.Description)
+        </td>
+        <td>
+            <a href="/Content/UpdateContent/@content.ContentID" class="btn btn-warning">Edit</a>
+        </td>
+        <td>
+            <a href="/Content/DeleteContent/@content.ContentID" class="btn btn-danger" onclick="return confirm('Are you confirm deleting of @content.Name?')">Delete</a>
+        </td>
+    </tr>
+}
+
+</table>

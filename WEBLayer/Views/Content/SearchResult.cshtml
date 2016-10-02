@@ -1,0 +1,42 @@
+﻿@model IEnumerable<WEBLayer.Models.ShortContentModel>
+
+<div id="searchresults">
+    @if (Model.Count() <= 0)
+    {
+        <h3>
+            <i>No contents find</i>
+        </h3> 
+    }
+    else
+    {
+        <style>
+            .rcorners {
+                border-radius: 25px;
+                background-color: #73AD21;
+                color: white;
+                padding: 10px;
+            }
+        </style>
+        <h3>
+            <i>Search result :</i>
+        </h3>
+        foreach (var content in Model)
+        {            
+            <div class="rcorners">
+                <h5 style="text-align:center"><b>@content.Name</b></h5>
+                
+                <img src="~/Content/GetFile/@content.ImageID" alt="Image not found for this content" />
+                
+                @if (Request.IsAuthenticated)
+                {
+                    <span style="float:right">
+                        @Html.ActionLink("See more details", "ShowContentDetails/" + content.ContentID, "Content", null, new { @class = "btn btn-primary" })
+                    </span>
+                }
+
+                <p>@content.Description</p>
+            </div>
+        }
+    }
+</div>
+

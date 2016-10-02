@@ -1,0 +1,127 @@
+﻿@using WEBLayer.Models
+@model WEBLayer.Models.ContentViewModel
+
+@{
+    GenreModel genre = ViewBag.Genre;
+    IEnumerable<ShortFileModel> files = ViewBag.Files;
+    AboutUserModel user = ViewBag.User;
+    ViewBag.Title = "Details about "+Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    dl{
+        margin-right:150px;
+    }
+
+    dd {
+        font-style: italic;
+        margin-bottom: 2em;
+    }
+
+    dt {
+        margin-bottom: 2em;
+    }
+</style>
+
+<div>
+    <h2>@Model.Name</h2>
+    <hr />
+    
+    <img style="float:right" src="~/Content/GetFile/@Model.ImageID" alt="Image not found for this content" />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd style="margin-top:50px">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.YearOfCreation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.YearOfCreation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Author)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+
+
+        <dt>
+            Genre :
+        </dt>
+
+        <dd>
+            @genre.Name
+        </dd>
+
+
+        <dt>
+            Uploaded by :
+        </dt>
+
+        <dd>
+            @user.UserName
+        </dd>
+    </dl>
+</div>
+
+<div>
+    @if (files.Count() > 0)
+    {
+        <h5>
+            Files:
+        </h5>
+        
+        <table style="width:100%">
+            <tr>
+                <th>Name of file</th>
+                <th>Listen</th>
+                <th>Link</th>
+            </tr>
+            @foreach (var file in files)
+            {
+                if (string.Equals(file.FileType, "audio/*"))
+                {
+                    <tr>
+                        <td>@file.Name</td>
+                        <td>
+                            <audio controls>
+                                <source src="/Content/GetFile/@file.FileID">
+                            </audio>
+                        </td>
+                        <td><a href="/Content/GetFile/@file.FileID">Download</a></td>
+                    </tr>
+                }
+            }            
+        </table>
+
+        <script>
+            $(function () {
+                $("audio").on("play", function () {
+                    $("audio").not(this).each(function (index, audio) {
+                        audio.pause();
+                    });
+                });
+            });
+        </script>
+    }
+    else
+    {
+        <h5>
+            No files attached to this content
+        </h5>
+    }
+</div>
+<hr/>
+<p>
+    @Html.ActionLink("Back to main page", "Index", "Home")
+</p>

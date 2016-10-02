@@ -1,0 +1,54 @@
+﻿@model IEnumerable<WEBLayer.Models.AboutUserModel>
+
+@{
+    ViewBag.Title = "Manage users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    Dictionary<string, WEBLayer.Models.RoleModel> dictionaryRole = ViewBag.dictionaryRole;
+    IEnumerable<WEBLayer.Models.RoleModel> roles = ViewBag.Roles;
+}
+
+<h2>Manage users</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            UserName of user
+        </th>
+        <th>
+            E-mail
+        </th>
+        <th>Add to role</th>
+    </tr>
+
+@foreach (var user in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(userItem => user.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(userItem => user.Email)
+        </td>
+        <td>
+            <form method="post" action="/Account/AddToRole">
+                <input name="UserName" hidden="hidden" value="@user.UserName"/> 
+                <select name="RoleName">
+                    @foreach (var role in roles)
+                    {
+                        if (string.Equals(role.Name, dictionaryRole[user.UserName].Name))
+                        {
+                            <option value="@role.Name" selected="selected">@role.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@role.Name">@role.Name</option>
+                        }
+                    }
+                </select>
+                <input type="submit" value="Add to role" class="btn btn-success"/>
+            </form>
+        </td>
+    </tr>
+}
+
+</table>

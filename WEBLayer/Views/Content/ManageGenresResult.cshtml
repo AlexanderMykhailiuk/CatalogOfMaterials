@@ -1,0 +1,47 @@
+﻿@model IEnumerable<WEBLayer.Models.GenreModel>
+
+@{ 
+    string ErrorMessage = ViewBag.ErrorMessage;
+}
+
+<div id="manageresult">
+    @if (ErrorMessage != null)
+    {
+        <i style="color:red">@ErrorMessage</i>
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Rename
+            </th>
+            <th>
+                Delete
+            </th>
+        </tr>
+
+        @foreach (var genre in Model)
+        {
+            <tr>
+                <td>
+                    @genre.Name
+                </td>
+                <td>
+                    @using (Ajax.BeginForm("RenameGenre/" + genre.GenreID, new AjaxOptions { UpdateTargetId = "results" }))
+                    {
+                        <input type="text" name="NewGenreName" style="width: 200px; height: 30px; border-radius:5px" />
+                        <input style="width: 200px; height: 30px; border-radius:5px" class="btn btn-warning" type="submit" value="Rename genre" />
+                    }
+                </td>
+                <td>
+                    @using (Ajax.BeginForm("RemoveGenre/" + genre.GenreID, new AjaxOptions { UpdateTargetId = "results" }))
+                    {
+                        <input style="width: 200px; height: 30px; border-radius:5px" class="btn btn-danger" type="submit" value="Delete genre" onclick="return confirm('Are you confirm deleting genre @genre.Name ?')"/>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>

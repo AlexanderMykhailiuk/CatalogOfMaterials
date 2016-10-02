@@ -1,0 +1,21 @@
+﻿@model IEnumerable<WEBLayer.Models.GenreModel>
+
+@{
+    ViewBag.Title = "Manage genres";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Manage genres</h2>
+
+<div id="results">
+    @Html.Partial("ManageGenresResult", Model)
+</div>
+
+<div>
+    @using (Html.BeginForm("AddGenre", "Content", FormMethod.Post))
+    {
+        <input type="text" name="NameNewGenre" style="width: 200px; height: 30px; border-radius:5px"/>
+        <input style="width: 100px; height: 30px; border-radius:5px" class="btn btn-success" type="submit" value="Add genre"/>
+    }
+</div>
+
