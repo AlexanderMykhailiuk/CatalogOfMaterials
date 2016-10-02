@@ -34,7 +34,14 @@ namespace DataAccessLayer
 
         public int Complete()
         {
-            return _context.SaveChanges();
+            try
+            {
+                return _context.SaveChanges();
+            }
+            catch // Thrown exception when delete genre, but delete normally
+            {
+                return 0;
+            }
         }
 
         #region IDisposable Support

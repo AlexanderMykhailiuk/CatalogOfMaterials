@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System;
 using System.Collections.Generic;
 
 namespace DataAccessLayer.Entities
@@ -11,11 +10,13 @@ namespace DataAccessLayer.Entities
         [Required]
         public string Name { get; set; }
         [Required]
-        public DateTime DateOfCreation { get; set; }
+        public int YearOfCreation { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
         public string Author { get; set; }
+        
+        public int? ImageID { get; set; }
 
         public virtual User user { get; set; }
         public virtual Genre genre { get; set; }

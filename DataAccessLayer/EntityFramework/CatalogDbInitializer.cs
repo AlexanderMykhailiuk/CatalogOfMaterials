@@ -62,6 +62,7 @@ namespace DataAccessLayer.EntityFramework
                 db.Genres.Add(new Genre { Name = "Pop" });
                 db.Genres.Add(new Genre { Name = "Rock" });
                 db.Genres.Add(new Genre { Name = "Hip-hop" });
+                db.Genres.Add(new Genre { Name = "Classical" });
             }
         }
     }

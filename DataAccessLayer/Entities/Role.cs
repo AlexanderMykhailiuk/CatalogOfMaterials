@@ -4,5 +4,6 @@ namespace DataAccessLayer.Entities
 {
     public class Role : IdentityRole
     {
+        
     }
 }

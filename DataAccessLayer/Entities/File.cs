@@ -9,6 +9,8 @@ namespace DataAccessLayer.Entities
         [Required]
         public string Name { get; set; }
         [Required]
+        public string FileType { get; set; }
+        [Required]
         public byte[] BinaryData { get; set; }
 
         public virtual Content content { get; set; }

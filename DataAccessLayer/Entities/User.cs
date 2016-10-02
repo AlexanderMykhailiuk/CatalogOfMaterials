@@ -7,7 +7,7 @@ namespace DataAccessLayer.Entities
     {
         public virtual ICollection<Content> Contents { get; set; }
         public User()
-        {
+        {   
             Contents = new List<Content>();
         }
     }
