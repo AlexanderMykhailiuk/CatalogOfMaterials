@@ -1,0 +1,43 @@
+﻿@using PagedList.Mvc
+@model PagedList.PagedList<WEBLayer.Models.ShortContentModel>
+
+@{
+    ViewBag.Title = "Main page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Uploaded contents</h2>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<link href="@Url.Content("~/Content/jquery-ui-1.12.1.min.css")" rel="stylesheet" type="text/css" />
+
+<div id="accordion">
+    @foreach(var content in Model)
+    {
+        <h3>@content.Name</h3>
+        <div>
+            <div>
+                <img style="float:left" src="~/Content/GetFile/@content.ImageID" alt="Image not found for this content" />
+                <p style="margin-left:150px">@content.Description</p>
+            </div>
+            <hr/>
+            @if (Request.IsAuthenticated)
+            {
+                <span style="float:right">
+                    @Html.ActionLink("See more details", "ShowContentDetails/" + content.ContentID, "Content", null, new { @class = "btn btn-success" })
+                </span>
+            }
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $("#accordion").accordion()
+</script>
+
+<div>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>

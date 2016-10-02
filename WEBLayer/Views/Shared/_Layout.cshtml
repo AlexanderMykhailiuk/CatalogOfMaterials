@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Music Catalog</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+        
+
+    <style>
+    button.extra1 {
+        width: 150px;
+        margin: auto;
+        color: white;
+    }
+    button.extra2 {
+        width: 200px;
+        margin: auto;
+        color: white;
+    }
+    .setnavbar{
+        background-image: url("/Content/Images/musical-notes-gif-music-notes-moving1.gif");
+        background-size: contain;
+    }
+    body{
+        background-color:skyblue;        
+    }
+    hr{
+        border-color:palegreen;
+    }
+    .btn-groupset{
+        margin-top:16px;
+    }
+
+    #scrollup {
+		position: fixed;
+		opacity: 0.8;
+        right: 10px;
+		bottom: 10px; /* отступ снизу */
+		display: none; /* спрятать блок */
+		cursor: pointer;
+    }
+    table {        
+        font-family: arial, sans-serif;
+        border-collapse: collapse;        
+        width: 100%;
+    }
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+     tr:nth-child(even) {
+         background-color: deepskyblue;
+         }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top setnavbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Music Catalog", "Index", "Home", new { area = "" }, new { @class = "btn btn-info", style = "height:50px;width:200px;padding-top:15px;font-size:20px" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <div class="btn-group btn-groupset" role="group" aria-label="...">
+                    @Html.ActionLink("About", "About", "Home", null, new { @class = "btn btn-danger extra1" })
+                    @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "btn btn-danger extra1" })
+                 </div>
+                @Html.Partial("_UserPartial")
+            </div>
+        </div>
+    </div>
+
+    <div id="scrollup">
+        <img height="100" width="100" alt="Scroll up" src="~/Content/Images/back-to-top-arrow-sign-icon-scroll-up-symbol-vector-4029487.jpg">
+    </div>
+
+    <script type="text/javascript">
+	    $( document ).ready(function() {
+	        $('#scrollup img').mouseover( function(){
+		            $(this).animate({opacity: 0.65},100);
+	            }).mouseout( function(){
+		            $(this).animate({opacity: 1},100);
+	            }).click( function(){
+		    window.scroll(0 ,0);
+		    return false;
+	    });
+
+	    $(window).scroll(function(){
+		    if ( $(document).scrollTop() > 0 ) {
+			    $('#scrollup').fadeIn('fast');
+		    } else {
+			    $('#scrollup').fadeOut('fast');
+		    }
+	    });
+    });
+
+    </script>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Music Catalog</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

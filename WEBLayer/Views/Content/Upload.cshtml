@@ -1,0 +1,94 @@
+﻿@model WEBLayer.Models.ContentUploadModel
+
+@{
+    ViewBag.Title = "Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    IEnumerable<WEBLayer.Models.GenreModel> Genres = ViewBag.Genres;
+
+    var genresList = Genres.Select(x => new SelectListItem
+    {
+        Text = x.Name,
+        Value = x.GenreID.ToString()
+    }
+);
+}
+
+<h2>Upload of new content</h2>
+
+@using (Html.BeginForm("Upload", "Content", FormMethod.Post, new { @enctype = "multipart/form-data"})) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.YearOfCreation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.YearOfCreation, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.YearOfCreation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", style = "height: 100px" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GenreID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.GenreID, genresList,"--Select genre--", new { @class = "selectpicker", style = "width: 400px; height: 40px"})
+                @Html.ValidationMessageFor(model => model.GenreID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Choose image</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Image, new { type = "file", accept = "image/*" })
+            </div>
+        </div>  
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Choose files</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Files, new { type = "file", multiple = "true", accept = "audio/*" })      
+            </div>
+        </div>       
+
+        <div class="form-group">            
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-success" style="width: 200px" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

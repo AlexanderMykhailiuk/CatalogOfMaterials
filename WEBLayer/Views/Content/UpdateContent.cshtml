@@ -1,0 +1,156 @@
+﻿@using WEBLayer.Models
+@model WEBLayer.Models.ContentUploadModel
+
+@{
+    ViewBag.Title = "Update " + Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    IEnumerable<ShortFileModel> files = ViewBag.Files;
+    AboutUserModel user = ViewBag.User;
+    IEnumerable<GenreModel> Genres = ViewBag.Genres;
+
+    var genresList = Genres.Select(x => new SelectListItem
+        {
+            Text = x.Name,
+            Value = x.GenreID.ToString()
+        }
+    );
+}
+
+<h2>Update @Model.Name</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.YearOfCreation, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.YearOfCreation, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.YearOfCreation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Author, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GenreID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.GenreID, genresList, new { @class = "selectpicker", style = "width: 400px; height: 40px" })
+                @Html.ValidationMessageFor(model => model.GenreID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Owner">Uploaded by</label>
+            <div class="col-md-10">
+                <i id="Owner">@user.UserName</i>
+            </div>
+        </div>
+
+        <div>
+            @if (files.Count() > 0)
+            {
+                <h5>
+                    Files:
+                </h5>
+
+                <table style="width:100%">
+                    <tr>
+                        <th>Name of file</th>
+                        <th>Type of file</th>
+                        <th>Interact</th>
+                    </tr>
+                    @foreach (var file in files)
+                    {
+                        if (string.Equals(file.FileType, "audio/*"))
+                        {
+                            <tr>
+                                <td>@file.Name</td>
+                                <td>Music</td>
+                                <td>
+                                    <audio controls>
+                                        <source src="/Content/GetFile/@file.FileID">
+                                    </audio>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@file.Name</td>
+                                <td>Image</td>
+                                <td><img src="~/Content/GetFile/@file.FileID" alt="Image not found for this content"/></td>
+                            </tr>
+                        }
+                    }
+                </table>
+
+                <script>
+                    $(function () {
+                        $("audio").on("play", function () {
+                            $("audio").not(this).each(function (index, audio) {
+                                audio.pause();
+                            });
+                        });
+                    });
+                </script>
+            }
+            else
+            {
+                <h5>
+                    No files attached to this content
+                </h5>
+            }
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Choose new image (remove previous)</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Image, new { type = "file", accept = "image/*" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Choose files(remove previous)</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Files, new { type = "file", multiple = "true", accept = "audio/*" })
+            </div>
+        </div> 
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Change" class="btn btn-success" style="width: 200px" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

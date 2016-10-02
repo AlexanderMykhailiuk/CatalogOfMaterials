@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <div class="dropdown navbar-right" style="margin-top:16px;">        
+        <button type="button" class="btn btn-success dropdown-toggle extra2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @("Hello, " + User.Identity.GetUserName())
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" style="background-color:greenyellow">
+            <li>@Html.ActionLink("Search content", "Search", "Content")</li>
+            <li>@Html.ActionLink("Add new content", "Upload", "Content")</li>
+            <li>@Html.ActionLink("Manage your content", "ManageUploads", "Content")</li>
+            <li>@Html.ActionLink("Change password", "ChangePassword", "Account")</li>
+            @if (User.IsInRole("Admin")||User.IsInRole("Moderator"))
+            {
+                <li role="separator" class="divider"></li>
+                <li>@Html.ActionLink("Manage all content", "ManageContents", "Content")</li>
+                <li>@Html.ActionLink("Manage genres", "ManageGenres", "Content")</li>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <li role="separator" class="divider"></li>
+                <li>@Html.ActionLink("Manage users", "ManageUsers", "Account")</li>
+            }
+            <li role="separator" class="divider"></li>
+            <li>@Html.ActionLink("Log out", "Logout", "Account")</li>
+        </ul>
+    </div>
+}
+else
+{    
+    <div class="btn-group navbar-right" style="margin-top:16px;" role="group" aria-label="...">
+        @Html.ActionLink("Log in", "Login", "Account", null, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Registry", "Register", "Account", null, new { @class = "btn btn-danger" })
+    </div>
+}
+
