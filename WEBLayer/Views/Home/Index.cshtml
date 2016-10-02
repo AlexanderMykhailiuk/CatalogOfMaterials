@@ -16,15 +16,17 @@
     @foreach(var content in Model)
     {
         <h3>@content.Name</h3>
-        <div>
+        <div style="max-height:200px;">
             <div>
-                <img style="float:left" src="~/Content/GetFile/@content.ImageID" alt="Image not found for this content" />
-                <p style="margin-left:150px">@content.Description</p>
+                <img style="float:left;max-width:150px;max-height:180px" src="~/Content/GetFile/@content.ImageID" alt="Image not found for this content" />
+                <div style="margin-left:180px">
+                    <p>@content.Description</p>
+                    <hr />
+                </div>
             </div>
-            <hr/>
             @if (Request.IsAuthenticated)
             {
-                <span style="float:right">
+                <span style="float:right; margin-bottom:10px;">
                     @Html.ActionLink("See more details", "ShowContentDetails/" + content.ContentID, "Content", null, new { @class = "btn btn-success" })
                 </span>
             }

@@ -210,7 +210,7 @@ namespace BusinessLogicLayer.Services
                         }
                         else
                         {
-                            if (files != null) content_in_db.Files.Remove(file);
+                            if (files != null) if (files.Count()>0) content_in_db.Files.Remove(file);
                         }
                     }
                     Database.Complete();

@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System.Web;
 
 namespace WEBLayer.Models
 {
@@ -25,10 +23,6 @@ namespace WEBLayer.Models
 
         [Required(ErrorMessage = "Genre of content is requred")]
         [Display(Name = "Genre of uploading content")]
-        public int GenreID { get; set; }
-
-        public HttpPostedFileBase Image { get; set; }
-
-        public IEnumerable<HttpPostedFileBase> Files { get; set; }
+        public int GenreID { get; set; }        
     }
 }

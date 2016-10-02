@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 using AutoMapper;
 using BusinessLogicLayer.DataTransferObjects;
 using WEBLayer.Models;
@@ -79,31 +80,31 @@ namespace WEBLayer.Mapping
                         Description = x.Description
                     }
                     );
-                    cfg.CreateMap<ContentUploadModel, FileDTO>().ConvertUsing(x =>
+                    cfg.CreateMap<HttpPostedFileBase, FileDTO>().ConvertUsing(x =>
                     {
-                        if (x.Image != null && x.Image.ContentLength > 0)
+                        if (x != null && x.ContentLength > 0)
                         {
                             byte[] binaryData;
 
-                            using (var reader = new System.IO.BinaryReader(x.Image.InputStream))
+                            using (var reader = new System.IO.BinaryReader(x.InputStream))
                             {
-                                binaryData = reader.ReadBytes(x.Image.ContentLength);
+                                binaryData = reader.ReadBytes(x.ContentLength);
                             }
 
                             return new FileDTO()
                             {
-                                Name = x.Image.FileName,
+                                Name = x.FileName,
                                 BinaryData = binaryData,
                                 FileType = "image/*"
                             };
                         }
                         else return null;
                     });
-                    cfg.CreateMap<ContentUploadModel, IEnumerable<FileDTO>>().ConvertUsing(x =>
+                    cfg.CreateMap<IEnumerable<HttpPostedFileBase>, IEnumerable<FileDTO>>().ConvertUsing(x =>
                     {
                         List<FileDTO> rez = new List<FileDTO>();
 
-                        foreach (var file in x.Files)
+                        foreach (var file in x)
                         {
                             if (file != null) if (file.ContentLength > 0)
                                 {

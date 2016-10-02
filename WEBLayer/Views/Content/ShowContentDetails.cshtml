@@ -5,6 +5,9 @@
     GenreModel genre = ViewBag.Genre;
     IEnumerable<ShortFileModel> files = ViewBag.Files;
     AboutUserModel user = ViewBag.User;
+
+    bool IsMusic = files.Where(x => string.Equals(x.FileType, "audio/*")).Count() > 0;
+
     ViewBag.Title = "Details about "+Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -75,7 +78,7 @@
 </div>
 
 <div>
-    @if (files.Count() > 0)
+    @if (IsMusic)
     {
         <h5>
             Files:

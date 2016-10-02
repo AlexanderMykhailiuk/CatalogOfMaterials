@@ -19,7 +19,7 @@
 <div>
     @using (Ajax.BeginForm("SearchResult", new AjaxOptions { UpdateTargetId = "results" }))
     {
-        <input type="text" name="searchText" style="width: 200px; height: 30px; border-radius:5px" data-autocomplete-source="@Url.Action("AutocompleteSearch", "Content")"/>
+        <input type="text" name="searchingText" style="width: 200px; height: 30px; border-radius:5px" data-autocomplete-source="@Url.Action("AutocompleteSearch", "Content")" value=""/>
 
         <script type="text/javascript">
             $(function () {

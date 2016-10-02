@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using BusinessLogicLayer.Interfaces;
 using BusinessLogicLayer.DataTransferObjects;
@@ -29,7 +30,7 @@ namespace WEBLayer.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Upload(ContentUploadModel model)
+        public ActionResult Upload(ContentUploadModel model, HttpPostedFileBase Image, IEnumerable<HttpPostedFileBase> Files)
         {
             if (ModelState.IsValid)
             {
@@ -37,8 +38,8 @@ namespace WEBLayer.Controllers
                 contentService.AddContent(User.Identity.Name,
                     mapper.Map<GenreDTO>(model),
                     mapper.Map<ContentDTO>(model),
-                    mapper.Map<IEnumerable<FileDTO>>(model),
-                    mapper.Map<FileDTO>(model)
+                    mapper.Map<IEnumerable<FileDTO>>(Files),
+                    mapper.Map<FileDTO>(Image)
                     );
                 return RedirectToAction("Index", "Home");
             }
@@ -120,10 +121,10 @@ namespace WEBLayer.Controllers
             ViewBag.Genres = mapper.Map<IEnumerable<GenreModel>>(contentService.GetAllGenres());
             return View();
         }
-
+        
         [HttpPost]
         [Authorize]
-        public ActionResult SearchResult(string searchingText, int? GenreID)
+        public ActionResult SearchResult(int? GenreID, string searchingText)
         {
             var mapper = ContentDTOtoShortContentModelConfig.CreateMapper();
 
@@ -219,7 +220,7 @@ namespace WEBLayer.Controllers
                     ViewBag.Files = mapper.Map<IEnumerable<ShortFileModel>>(files);
                     ViewBag.Genres = mapper.Map<IEnumerable<GenreModel>>(contentService.GetAllGenres());
                     ViewBag.User = mapper.Map<AboutUserModel>(user);
-
+                    
                     return View(content);
                 }
                 catch (BusinessLogicLayer.Exceptions.NotExistContentException)
@@ -231,7 +232,7 @@ namespace WEBLayer.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult UpdateContent(int? id, ContentUploadModel model)
+        public ActionResult UpdateContent(int? id, ContentUploadModel model, HttpPostedFileBase Image, IEnumerable<HttpPostedFileBase> Files)
         {
             if (id == null) return HttpNotFound();
             else
@@ -250,13 +251,13 @@ namespace WEBLayer.Controllers
                         contentService.Update(User.Identity.Name,
                             mapper.Map<GenreDTO>(model),
                             contentDTO,
-                            mapper.Map<IEnumerable<FileDTO>>(model),
-                            mapper.Map<FileDTO>(model)
+                            mapper.Map<IEnumerable<FileDTO>>(Files),
+                            mapper.Map<FileDTO>(Image)
                             );
                         return RedirectToAction("Index", "Home");
                     }
                     else
-                    {   
+                    {
                         return RedirectToAction("UpdateContent/" + ContentID,"Content");
                     }
                 }
@@ -276,7 +277,7 @@ namespace WEBLayer.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Modertor")]
+        [Authorize(Roles = "Admin, Moderator")]
         public ActionResult ManageContents()
         {
             var mapper = ContentDTOtoShortContentModelConfig.CreateMapper();
@@ -288,7 +289,7 @@ namespace WEBLayer.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Modertor")]
+        [Authorize(Roles = "Admin, Moderator")]
         public ActionResult ManageGenres()
         {
             var mapper = GenreDTOtoGenreModelConfig.CreateMapper();

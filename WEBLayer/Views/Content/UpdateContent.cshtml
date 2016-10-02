@@ -19,7 +19,7 @@
 
 <h2>Update @Model.Name</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null,null, FormMethod.Post, new { @enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -132,14 +132,14 @@
         <div class="form-group">
             <label class="control-label col-md-2">Choose new image (remove previous)</label>
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Image, new { type = "file", accept = "image/*" })
+                <input accept="image/*" id="Image" name="Image" type="file" value="" />
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-2">Choose files(remove previous)</label>
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Files, new { type = "file", multiple = "true", accept = "audio/*" })
+                <input accept="audio/*" id="Files" multiple name="Files" type="file" value="" />
             </div>
         </div> 
 
